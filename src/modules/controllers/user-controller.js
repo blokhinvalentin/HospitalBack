@@ -1,12 +1,12 @@
 const userService = require('../service/user-service');
 const ApiError = require('../exceptions/api-error');
-const { checkLogin, checkPassword } = require('../../helpers/validation');
+const Validation = require('../../helpers/validation');
 
 class UserController {
-  async registration(req, res, next) {
+  registration = async (req, res, next) => {
     try {
       const { login, password } = req.body;
-      if (!checkLogin(login) || !checkPassword(password)) {
+      if (!Validation.checkLogin(login) || !Validation.checkPassword(password)) {
         return next(ApiError.BadRequest('validation error'));
       }
       const userData = await userService.registration(login, password);
@@ -17,7 +17,7 @@ class UserController {
     }
   }
 
-  async login(req, res, next) {
+  login = async (req, res, next) => {
     try {
       const { login, password } = req.body;
       if (login === '' || password === '') {
@@ -31,7 +31,7 @@ class UserController {
     }
   }
 
-  async logout(req, res, next) {
+  logout = async (req, res, next) => {
     try {
       const { refreshToken } = req.cookies;
       const token = await userService.logout(refreshToken);
@@ -42,17 +42,7 @@ class UserController {
     }
   }
 
-  // async activate(req, res, next) {
-  //   try {
-  //     const activationLink = req.params.link;
-  //     await userService.activate(activationLink);
-  //     return res.redirect(process.env.CLIENT_URL)
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
-
-  async refresh(req, res, next) {
+  refresh = async (req, res, next) => {
     try {
       const { refreshToken } = req.cookies;
       const userData = await userService.refresh(refreshToken);
@@ -62,15 +52,6 @@ class UserController {
       next(error);
     }
   }
-
-  // async getMeetings(req, res, next) {
-  //   try {
-  //     const meetings = await userService.getAllMeetings();
-  //     return res.json(meetings);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
 }
 
 module.exports = new UserController();
