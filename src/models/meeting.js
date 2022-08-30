@@ -3,7 +3,8 @@ const { Schema, model } = require('mongoose');
 const meetingSchema = new Schema({
   patientName: { 
     type: String,
-    required: true
+    required: true,
+    ref: 'User'
   },
 
   doctorName: {
@@ -12,12 +13,14 @@ const meetingSchema = new Schema({
   },
 
   date: {
-    type: Date
+    type: Date,
+    required: true,
   },
 
-  reports: {
-    type: String
+  complaints: {
+    type: String,
+    required: true
   }
 });
 
-module.exports = Meetings = model('Meeting', meetingSchema);
+module.exports = Meetings = model('Meetings', meetingSchema);
